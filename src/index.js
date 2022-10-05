@@ -2,7 +2,6 @@ const express = require("express");
 const app = require("./app.js");
 const mongoose = require("mongoose");
 const port = 3000;
-const Subscriber = require("./models/subscribers");
 
 // Parse JSON bodies (as sent by API clients)
 app.use(express.json());
