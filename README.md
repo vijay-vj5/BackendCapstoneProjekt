@@ -1,7 +1,7 @@
 # Get YouTube Subscribers - Backend Capstone Project
-1. First **install npm dependencies** of **express** and **mongoose** using ```npm install``` command.
-2. **Create database in your local computer** using ```node src/createDatabase.js``` command.
-3. **Start the backend server** using ```npm start``` or ```node src/index.js``` command . 
+1. First **install npm dependencies** of **express** and **mongoose** using `npm install` command.
+2. **Create database in your local computer** using `node src/createDatabase.js` command.
+3. **Start the backend server** using `npm start` or `node src/index.js` command . 
 
 ## GET requests used in the project
 1. GET [http://localhost:3000/subscribers](http://localhost:3000/subscribers) to get array of subscribers.
