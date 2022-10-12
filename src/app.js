@@ -4,13 +4,13 @@ const subscriberModel = require("./models/subscribers");
 
 app.use(express.json());
 
-// Get array of all subscribers from database
+// 1. Get array of all subscribers from database
 app.get("/subscribers", async (req, res) => {
   const subscribers = await subscriberModel.find().select("-__v");
   res.json(subscribers);
 });
 
-// Get array of subscriber's name and subscribed channel from database
+// 2. Get array of subscriber's name and subscribed channel from database
 app.get("/subscribers/names", async (req, res) => {
   const subscribers = await subscriberModel
     .find()
@@ -18,12 +18,13 @@ app.get("/subscribers/names", async (req, res) => {
   res.json(subscribers);
 });
 
-// Get a particular subscriber from database using _id
+// 3. Get a particular subscriber from database using _id
 app.get("/subscribers/:id", async (req, res) => {
   const id = req.params.id;
 
   await subscriberModel
-    .findById(id, { __v: 0 })
+    .findById(id)
+    .select("-__v")
     .then((data) => {
       if (!data) {
         // When the subscriber is not found for the given id.
@@ -41,8 +42,8 @@ app.get("/subscribers/:id", async (req, res) => {
     });
 });
 
-// Add a subscriber to the database and shows the added subscriber to the client.
-app.post("/subscribers/add", async (req, res) => {
+// 4. Add a subscriber to the database and shows the added subscriber to the client.
+app.post("/subscribers", async (req, res) => {
   const subscribers = new subscriberModel({
     name: req.body.name,
     subscribedChannel: req.body.subscribedChannel,
@@ -51,15 +52,15 @@ app.post("/subscribers/add", async (req, res) => {
   await subscribers
     .save()
     .then((data) => {
-      res.json(data);
+      res.status(201).json(data);
     })
     .catch((error) => {
       res.status(400).json({ message: error.message });
     });
 });
 
-// Update a subscriber from the database using _id and shows the updated subscriber to the client.
-app.put("/subscribers/update/:id", async (req, res) => {
+// 5. Update a subscriber from the database using _id and shows the updated subscriber to the client.
+app.put("/subscribers/:id", async (req, res) => {
   let upId = req.params.id;
   let upName = req.body.name;
   let upSubscribedChannel = req.body.subscribedChannel;
@@ -78,7 +79,7 @@ app.put("/subscribers/update/:id", async (req, res) => {
         );
         res.status(400).json({ message: error.message });
       } else {
-        res.json(data);
+        res.status(201).json(data);
       }
     })
     .catch((error) => {
@@ -87,8 +88,8 @@ app.put("/subscribers/update/:id", async (req, res) => {
     });
 });
 
-// Delete a subscriber from the database using _id and shows the deleted subscriber to the client.
-app.delete("/subscribers/delete/:id", async (req, res) => {
+// 6. Delete a subscriber from the database using _id and shows the deleted subscriber to the client.
+app.delete("/subscribers/:id", async (req, res) => {
   const id = req.params.id;
 
   await subscriberModel
@@ -101,6 +102,7 @@ app.delete("/subscribers/delete/:id", async (req, res) => {
         );
         res.status(400).json({ message: error.message });
       } else {
+        // Deleted data won't be shown to the client.
         res.json(data);
       }
     })
@@ -110,7 +112,14 @@ app.delete("/subscribers/delete/:id", async (req, res) => {
     });
 });
 
+// Handles all the unwanted requests.
 app.use((req, res) => {
   res.status(404).json({ message: "Route not found" });
 });
+
+// Display the written message on the homepage to the client.
+app.get("/", (req, res) => {
+  res.json(["Hello User!"]);
+});
+
 module.exports = app;
