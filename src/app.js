@@ -4,6 +4,11 @@ const subscriberModel = require("./models/subscribers");
 
 app.use(express.json());
 
+// Display the written message on the homepage to the client.
+app.get("/", (req, res) => {
+  res.json("Hello User!");
+});
+
 // 1. Get array of all subscribers from database
 app.get("/subscribers", async (req, res) => {
   const subscribers = await subscriberModel.find().select("-__v");
@@ -28,9 +33,7 @@ app.get("/subscribers/:id", async (req, res) => {
     .then((data) => {
       if (!data) {
         // When the subscriber is not found for the given id.
-        error = Error(
-          `Cast to ObjectId failed for value \"{ _id: '${id}' }\" (type Object) at path \"_id\" for model \"Subscriber\"`
-        );
+        error = Error(`Subscriber doesn't exist with the given _id: ${id}.`);
         res.status(400).json({ message: error.message });
       } else {
         res.json(data);
@@ -38,7 +41,9 @@ app.get("/subscribers/:id", async (req, res) => {
     })
     .catch((error) => {
       // When the id is not entered in the correct format.
-      res.status(400).json({ message: error.message });
+      res.status(400).json({
+        message: `Subscriber doesn't exist with the given _id: ${id}.`,
+      });
     });
 });
 
@@ -74,9 +79,7 @@ app.put("/subscribers/:id", async (req, res) => {
     .then((data) => {
       if (!data) {
         // When the subscriber is not present for the given id.
-        error = Error(
-          `Cast to ObjectId failed for value \"{ _id: '${upId}' }\" (type Object) at path \"_id\" for model \"Subscriber\"`
-        );
+        error = Error(`Subscriber doesn't exist with the given _id: ${upId}.`);
         res.status(400).json({ message: error.message });
       } else {
         res.status(201).json(data);
@@ -84,7 +87,9 @@ app.put("/subscribers/:id", async (req, res) => {
     })
     .catch((error) => {
       // When the id is not entered in the correct format.
-      res.status(400).json({ message: error.message });
+      res.status(400).json({
+        message: `Subscriber doesn't exist with the given _id: ${upId}.`,
+      });
     });
 });
 
@@ -97,29 +102,24 @@ app.delete("/subscribers/:id", async (req, res) => {
     .then((data) => {
       if (!data) {
         // When the subscriber is not present for the given id.
-        error = Error(
-          `Cast to ObjectId failed for value \"{ _id: '${id}' }\" (type Object) at path \"_id\" for model \"Subscriber\"`
-        );
+        error = Error(`Subscriber doesn't exist with the given _id: ${id}.`);
         res.status(400).json({ message: error.message });
       } else {
         // Deleted data won't be shown to the client.
-        res.json(data);
+        res.json("Subscriber deleted successfully.");
       }
     })
     .catch((error) => {
       // When the id is not entered in the correct format.
-      res.status(400).json({ message: error.message });
+      res.status(400).json({
+        message: `Subscriber doesn't exist with the given _id: ${id}.`,
+      });
     });
 });
 
 // Handles all the unwanted requests.
 app.use((req, res) => {
   res.status(404).json({ message: "Route not found" });
-});
-
-// Display the written message on the homepage to the client.
-app.get("/", (req, res) => {
-  res.json(["Hello User!"]);
 });
 
 module.exports = app;
