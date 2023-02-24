@@ -106,7 +106,7 @@ Contributions are welcome! To contribute to the project, follow these steps:
 - Eeshwar chandran
 
 ## Demo
-[Click here to Visit Site](https://almabetter-project2.onrender.com/).
+[Click here to Visit Site](https://capstone-projects.onrender.com/).
 
 ## License
 - [MIT](https://choosealicense.com/licenses/mit/)
