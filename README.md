@@ -25,7 +25,7 @@ The main purpose of this project is to provide a starting point for building a l
 To get started with the Project, you'll need to have Node.js and MongoDB installed on your machine. Once you have those installed, follow these steps:
 
 Clone this repository to your local machine.
-using  git clone jhhkkhkkhkh 
+using  git clone https://github.com/vijay-vj5/BackendCapstoneProjekt.git
 
 
 1. First **install npm dependencies** of **express** and **mongoose** using `npm install` command.
